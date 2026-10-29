@@ -155,6 +155,11 @@ intake → spec → build → gate → review → approve, one PR per issue. Sta
 `factory/checks.sh`. Dashboard: `cd factory && python3 -m http.server`, then
 open http://localhost:8000/dashboard.html.
 
+What a factory issue must contain (one behaviour, testable criteria, product
+decisions, out of scope, `Depends on #n`) is in `docs/factory-issues.md`, and
+the **Factory feature** issue template asks for it. Intake asks for anything
+from that list the issue leaves out and the code can't answer.
+
 The factory (`.claude/` and `factory/`) is adapted from ZazenCodes'
 [software-factory-claude-code-v2](https://github.com/zazencodes/zazencodes-season-3/tree/main/src/software-factory-claude-code-v2),
 which is GPLv3; see `factory/LICENSE`.

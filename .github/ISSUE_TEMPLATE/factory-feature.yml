@@ -1,0 +1,50 @@
+name: Factory feature
+description: One concrete behaviour for the software factory to build. See docs/factory-issues.md.
+title: "<verb> <one concrete behaviour>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The factory builds this issue without a human reviewing the story or spec, so anything left open here is decided by an agent.
+        Read [docs/factory-issues.md](https://github.com/sysp0/DRF-Commerce/blob/main/docs/factory-issues.md) first.
+        A maintainer adds the `factory` label only after every dependency below is merged.
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Behaviour
+      description: One concrete behaviour, not an area. Not "Products", but "A Product model with name, slug, price and stock, plus its admin".
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Testable criteria. For each behaviour, the endpoint (method and path), the input, the output and the status code, including the failure cases.
+      placeholder: |
+        - POST /api/products/ as staff with {name, slug, price, stock} returns 201 and the product.
+        - The same request as a non-staff user returns 403.
+        - A negative price returns 400.
+    validations:
+      required: true
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Product decisions
+      description: What only you know. Who may do this (anonymous, signed in, owner, staff)? What is public? How is money calculated? What happens to stock? Write "your choice" where you don't mind.
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: Tempting extras the factory must not build in this issue.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: One "Depends on #n" line per issue that must be merged first, or "none".
+      placeholder: Depends on #12
+    validations:
+      required: true
