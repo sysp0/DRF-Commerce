@@ -119,6 +119,34 @@ uv run mypy --follow-imports=silent <new non-test .py files>
 uv run pytest
 ```
 
+## Review hot spots
+
+What reviewers and the approver should look at hardest in this repo.
+
+- **Access**: a DRF view without `ApiAuthMixin` (or its own permission
+  classes) is public. Selectors filter by `request.user` for anything a user
+  owns: carts, orders, addresses, profiles. Staff-only actions check
+  `is_admin`. Nothing lets a caller set `is_admin`, `is_superuser`,
+  `is_active` or another user's email.
+- **Identity**: `BaseUser` and its manager (`drf_commerce/users/models.py`),
+  registration and password validators (`drf_commerce/users/apis.py`,
+  `validators.py`), the JWT views and settings
+  (`drf_commerce/authentication/urls.py`, `config/settings/jwt.py`).
+- **Money and stock**: prices and totals come from the database, never the
+  request. Stock and order state change inside a transaction with
+  `select_for_update` or `F()`, so two requests can't oversell. Payment
+  webhooks verify the signature and are idempotent.
+- **Data exposure**: output serializers list their fields (no `"__all__"` on
+  `BaseUser`), and errors don't echo exceptions to the caller.
+- **Who uses it**: shoppers through a frontend or mobile app (anonymous and
+  signed in), frontend developers reading Swagger at `/`, and staff in the
+  Django admin at `/admin/`. The only pages are the admin, Swagger and Redoc;
+  they use stock Django and drf-spectacular styling.
+- **Always for a human**: changes to auth, permissions, prices, payments or
+  order state; any migration; settings in `config/`, `Procfile`, `docker/` or
+  `docker-compose*.yml`; new dependencies; a new public endpoint, or a removed
+  or renamed field clients already use.
+
 ## Software factory
 
 `/factory run` builds every open GitHub issue labeled `factory` through

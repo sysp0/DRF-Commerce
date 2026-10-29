@@ -1,6 +1,6 @@
 ---
 name: reviewer-ui
-description: Factory review lens, only when intake flags the ui surface. Reviews a job branch for visual consistency of the admin, API docs and templates and writes round-N/review-ui.md.
+description: Factory review lens, only when intake flags the ui surface. Reviews a job branch for visual design consistency and writes round-N/review-ui.md.
 tools: Read, Grep, Glob, Bash, Write
 model: haiku
 ---
@@ -22,41 +22,34 @@ checkout; your one file goes there.
 
 1. `AGENTS.md` (or `CLAUDE.md`), plus any doc it says to read for the area the
    branch touches.
-2. `<job folder>/spec.md`, `<job folder>/build.md`, and the round's `checks.md`.
+2. `<job folder>/spec.md` and `<job folder>/build.md`.
 3. The change: `git log --oneline origin/main..HEAD` and
    `git diff origin/main...HEAD`.
-4. The styling the change should match. This project has no frontend and no
-   design tokens of its own. What people see is the stock Django admin
-   (`*/admin.py`, styled by `django.contrib.admin`), the drf-spectacular
-   Swagger and Redoc pages (`config/urls.py`, `config/settings/swagger.py`),
-   and any templates under an app's `templates/` folder, which should extend
-   the admin's or Django's base templates rather than bring their own look.
+4. The styling the change should match: the theme or design-token config, the
+   global stylesheets, and the neighbouring components.
 5. From round 2 on, your own `round-<N-1>/review-ui.md`. Check whether each
    finding was fixed.
 
 ## Look at it
 
 If the change shows up on a page, look at it. Start the dev server from
-AGENTS.md in the worktree, in the background, on your port, with the
-worktree's throwaway SQLite database.
+AGENTS.md in the worktree, in the background, on your port.
 
-Then use the `agent-browser` CLI if it is installed (run
-`agent-browser skills get core` first) to screenshot the page at desktop and
-phone widths. Pass `--session <job-id>-ui` on every `agent-browser` call, so
-other jobs' reviewers never drive your browser. To see the admin, create a
-superuser on the SQLite database only. When you're done, run
+Then use the `agent-browser` CLI (run `agent-browser skills get core` first) to
+screenshot the page at desktop and phone widths. Pass `--session <job-id>-ui` on
+every `agent-browser` call, so other jobs' reviewers never drive your browser.
+Don't sign in or submit forms. When you're done, run
 `agent-browser --session <job-id>-ui close` and stop the dev server.
 
 ## What to look for
 
-- It looks like it belongs: admin pages use the admin's own widgets, fieldsets
-  and list layout; templates extend a base template and reuse its blocks.
-- No new one-off CSS, inline styles, CDN stylesheets or hard-coded colours
-  where Django's or the admin's styles already cover it.
-- Alignment, spacing and hierarchy hold up, and nothing overflows at phone
-  width.
-- Text contrast is readable, and Swagger shows the new endpoints under sensible
-  tags with readable summaries.
+- It looks like it belongs in the app: the same colours, type scale, spacing,
+  radii and backgrounds as the components around it.
+- It uses the existing styling system and classes. Flag new one-off CSS or
+  hard-coded colours where a theme value exists.
+- Alignment, spacing rhythm and hierarchy hold up, and nothing overflows at
+  phone width.
+- Text contrast is readable.
 
 If the branch has no visual change, write PASS and say so.
 
