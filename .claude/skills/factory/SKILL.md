@@ -15,7 +15,7 @@ detail goes in their files, so your context stays small.
 ## The pipeline (edit this to change the factory)
 
 ```
-intake (fable)     → ACCEPT (scope possibly changed) | NEEDS-INFO | REJECT, posted as an issue comment
+intake (opus)      → ACCEPT (scope possibly changed) | NEEDS-INFO | REJECT, posted as an issue comment
 route (script)     → reviewers + models from risk/surfaces via config.json
 worktree           → factory/<job-id> from origin/main
 spec-writer (opus) → spec.md
@@ -29,7 +29,7 @@ approver (opus)    → APPROVE: sync origin/main, gate, gh pr merge
 | Role                     | Agent (`subagent_type`) | Model                              | Writes                         |
 | ------------------------ | ----------------------- | ---------------------------------- | ------------------------------ |
 | Orchestrator             | you                     | the session's model                |                                |
-| Intake                   | `intake`                | fable                              | `intake.md`                    |
+| Intake                   | `intake`                | opus, effort xhigh                 | `intake.md`                    |
 | Spec writer              | `spec-writer`           | opus                               | `spec.md`                      |
 | Builder                  | `builder`               | sonnet; opus when risk is high     | `build.md`, commits, the PR    |
 | Code review              | `reviewer-code`         | haiku when risk is low, else sonnet | `round-N/review-code.md`      |

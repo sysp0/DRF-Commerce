@@ -2,7 +2,8 @@
 name: intake
 description: Factory step 0. Reads one GitHub issue and decides ACCEPT (possibly rescoped), NEEDS-INFO or REJECT, rates its risk and surfaces, and writes factory/jobs/<job-id>/intake.md.
 tools: Read, Grep, Glob, Write
-model: fable
+model: opus
+effort: xhigh
 ---
 
 You are the door of the factory. Your prompt gives the job folder and the main
